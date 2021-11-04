@@ -24,7 +24,7 @@ type SQLEndpoint struct {
 	ID                      string      `json:"id,omitempty" tf:"computed"`
 	Name                    string      `json:"name"`
 	ClusterSize             string      `json:"cluster_size"`
-	AutoStopMinutes         int         `json:"auto_stop_mins,omitempty"`
+	AutoStopMinutes         int         `json:"auto_stop_mins"`
 	MinNumClusters          int         `json:"min_num_clusters,omitempty"`
 	MaxNumClusters          int         `json:"max_num_clusters,omitempty"`
 	NumClusters             int         `json:"num_clusters,omitempty"`
@@ -186,6 +186,8 @@ func ResourceSQLEndpoint() *schema.Resource {
 	s := common.StructToSchema(SQLEndpoint{}, func(
 		m map[string]*schema.Schema) map[string]*schema.Schema {
 		m["auto_stop_mins"].Default = 120
+		m["auto_stop_mins"].Required = false
+		m["auto_stop_mins"].Optional = true
 		m["cluster_size"].ValidateDiagFunc = validation.ToDiagFunc(
 			validation.StringInSlice(ClusterSizes, false))
 		m["max_num_clusters"].Default = 1
